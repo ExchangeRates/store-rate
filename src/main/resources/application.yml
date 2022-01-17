@@ -1,0 +1,33 @@
+spring:
+  kafka:
+#    bootstrap-servers: ${kafka_bootstrap_servers:host.minikube.internal:9094}
+    bootstrap-servers: ${kafka_bootstrap_servers:localhost:9092}
+    properties:
+      sasl:
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username=${kafka_username:'admin'} password=${kafka_password:'admin-secret'};
+        mechanism: PLAIN
+      security:
+        protocol: SASL_PLAINTEXT
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      group-id: storeRateGroup
+      enable-auto-commit: false
+      client-id: ${random.uuid}
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: "cup:com.wcreators.storerate.dto.CupRateDTO,noAction:com.wcreators.storerate.dto.NoRateActionDTO,action:com.wcreators.storerate.dto.RateActionDTO"
+    jaas:
+      enabled: true
+    listener:
+      poll-timeout: 1800000
+      concurrency: 1
+      ack-mode: manual_immediate
+  datasource:
+#    url: jdbc:mysql://host.minikube.internal:3306/todo_db?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost:3306/todo_db?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: root
+    password: root
+server:
+  port: 8081
