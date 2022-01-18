@@ -4,11 +4,15 @@ import com.wcreators.storerate.dto.RateActionDTO;
 import com.wcreators.storerate.entity.RateActionEntity;
 import com.wcreators.storerate.model.RateAction;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface RateActionMapper {
 
-    RateAction entityToModel(RateActionEntity entity);
+    @Mappings({
+            @Mapping(target = "date", source = "created")
+    })
     RateActionEntity modelToEntity(RateAction model);
 
     RateAction dtoToModel(RateActionDTO dto);
