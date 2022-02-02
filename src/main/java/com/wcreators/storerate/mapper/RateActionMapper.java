@@ -16,4 +16,9 @@ public interface RateActionMapper {
     RateActionEntity modelToEntity(RateAction model);
 
     RateAction dtoToModel(RateActionDTO dto);
+
+    @Mappings({
+            @Mapping(target = "created", source = "date")
+    })
+    RateActionDTO entityToDto(RateActionEntity entity);
 }
