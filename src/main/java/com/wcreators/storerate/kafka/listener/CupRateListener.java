@@ -7,9 +7,11 @@ import com.wcreators.storerate.model.CupRatePoint;
 import com.wcreators.storerate.repository.cup.CupRatePointRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+@ConditionalOnProperty(value = "spring.kafka.bootstrap-servers", havingValue = "true")
 @Service
 @RequiredArgsConstructor
 @Slf4j

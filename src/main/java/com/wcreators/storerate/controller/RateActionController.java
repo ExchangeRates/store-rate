@@ -2,6 +2,7 @@ package com.wcreators.storerate.controller;
 
 import com.wcreators.storerate.config.property.ServiceProperties;
 import com.wcreators.storerate.constant.Strategy;
+import com.wcreators.storerate.dto.CountDTO;
 import com.wcreators.storerate.dto.RateActionDTO;
 import com.wcreators.storerate.entity.RateActionEntity;
 import com.wcreators.storerate.mapper.RateActionMapper;
@@ -53,7 +54,7 @@ public class RateActionController {
     }
 
     @GetMapping("/rate-actions/{strategy}/count")
-    public int getRateActionsCount(
+    public CountDTO getRateActionsCount(
             @PathVariable final String strategy,
             @RequestParam @DateTimeFormat(pattern = "MM.dd.yyyy") final Date from,
             @RequestParam @DateTimeFormat(pattern = "MM.dd.yyyy") final Date to
@@ -62,11 +63,15 @@ public class RateActionController {
         if (concreteStrategy.isEmpty()) {
             throw new IllegalArgumentException("Strategy name " + strategy + " is not defined");
         }
-        return rateActionRepository.countAllByStrategyAndDateAfterAndDateBefore(
+        int count = rateActionRepository.countAllByStrategyAndDateAfterAndDateBefore(
                 strategy,
                 from,
                 to
         );
+        return CountDTO.builder()
+                .count(count)
+                .onePageSize(serviceProperties.getPageSize())
+                .build();
     }
 
 }
